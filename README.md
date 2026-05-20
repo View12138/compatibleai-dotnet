@@ -1,39 +1,51 @@
-# OpenAI .NET API library
+# CompatibleAI .NET API library (from [OpenAI-dotnet](https://github.com/openai/openai-dotnet))
 
-[![NuGet stable version](https://img.shields.io/nuget/v/openai.svg)](https://www.nuget.org/packages/OpenAI)
+<div align="center">
+<img src="https://github.com/View12138/compatibleai-dotnet/blob/compatible/eng/CompatibleAI-Logo.png?raw=true" height=256px/>
+</div>
 
-The OpenAI .NET library provides convenient access to the OpenAI REST API from .NET applications.
+[![NuGet stable version](https://img.shields.io/nuget/v/CompatibleAI.svg)](https://www.nuget.org/packages/CompatibleAI)
+
+The CompatibleAI .NET library provides convenient access to the OpenAI REST API from .NET applications.
 
 It is generated from our [OpenAPI specification](https://github.com/openai/openai-openapi) in collaboration with Microsoft.
 
 ## Table of Contents
 
-- [Getting started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Install the NuGet package](#install-the-nuget-package)
-- [Using the client library](#using-the-client-library)
-  - [Namespace organization](#namespace-organization)
-  - [Using the async API](#using-the-async-api)
-  - [Using the `OpenAIClient` class](#using-the-openaiclient-class)
-- [How to use dependency injection](#how-to-use-dependency-injection)
-- [How to use chat completions with streaming](#how-to-use-chat-completions-with-streaming)
-- [How to use chat completions with tools and function calling](#how-to-use-chat-completions-with-tools-and-function-calling)
-- [How to use chat completions with structured outputs](#how-to-use-chat-completions-with-structured-outputs)
-- [How to use chat completions with audio](#how-to-use-chat-completions-with-audio)
-- [How to use responses with streaming and reasoning](#how-to-use-responses-with-streaming-and-reasoning)
-- [How to use responses with file search](#how-to-use-responses-with-file-search)
-- [How to use responses with web search](#how-to-use-responses-with-web-search)
-- [How to generate text embeddings](#how-to-generate-text-embeddings)
-- [How to generate images](#how-to-generate-images)
-- [How to transcribe audio](#how-to-transcribe-audio)
-- [How to use assistants with retrieval augmented generation (RAG)](#how-to-use-assistants-with-retrieval-augmented-generation-rag)
-- [How to use assistants with streaming and vision](#how-to-use-assistants-with-streaming-and-vision)
-- [How to work with Azure OpenAI](#how-to-work-with-azure-openai)
-- [Advanced scenarios](#advanced-scenarios)
-  - [Using protocol methods](#using-protocol-methods)
-  - [Mock a client for testing](#mock-a-client-for-testing)
-  - [Automatically retrying errors](#automatically-retrying-errors)
-  - [Observability](#observability)
+- [CompatibleAI .NET API library (from OpenAI-dotnet)](#compatibleai-net-api-library-from-openai-dotnet)
+  - [Table of Contents](#table-of-contents)
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Install the NuGet package](#install-the-nuget-package)
+  - [Using the client library](#using-the-client-library)
+    - [Using a custom base URL and API key](#using-a-custom-base-url-and-api-key)
+    - [Namespace organization](#namespace-organization)
+    - [Using the async API](#using-the-async-api)
+    - [Using the `OpenAIClient` class](#using-the-openaiclient-class)
+  - [How to use dependency injection](#how-to-use-dependency-injection)
+  - [How to use chat completions with streaming](#how-to-use-chat-completions-with-streaming)
+  - [How to use chat completions with tools and function calling](#how-to-use-chat-completions-with-tools-and-function-calling)
+  - [How to use chat completions with structured outputs](#how-to-use-chat-completions-with-structured-outputs)
+  - [How to use chat completions with audio](#how-to-use-chat-completions-with-audio)
+  - [How to use responses with streaming and reasoning](#how-to-use-responses-with-streaming-and-reasoning)
+  - [How to use responses with file search](#how-to-use-responses-with-file-search)
+  - [How to use responses with web search](#how-to-use-responses-with-web-search)
+  - [How to generate text embeddings](#how-to-generate-text-embeddings)
+  - [How to generate images](#how-to-generate-images)
+  - [How to transcribe audio](#how-to-transcribe-audio)
+  - [How to use assistants with retrieval augmented generation (RAG)](#how-to-use-assistants-with-retrieval-augmented-generation-rag)
+  - [How to use assistants with streaming and vision](#how-to-use-assistants-with-streaming-and-vision)
+  - [How to use with Moonshot AI (Kimi) and DeepSeek](#how-to-use-with-moonshot-ai-kimi-and-deepseek)
+    - [Moonshot AI (Kimi)](#moonshot-ai-kimi)
+    - [DeepSeek](#deepseek)
+  - [How to work with Azure OpenAI](#how-to-work-with-azure-openai)
+    - [Secure Access with Microsoft Entra ID (No API Keys)](#secure-access-with-microsoft-entra-id-no-api-keys)
+    - [Why this works](#why-this-works)
+  - [Advanced scenarios](#advanced-scenarios)
+    - [Using protocol methods](#using-protocol-methods)
+    - [Mock a client for testing](#mock-a-client-for-testing)
+    - [Automatically retrying errors](#automatically-retrying-errors)
+    - [Observability](#observability)
 
 ## Getting started
 
@@ -46,14 +58,14 @@ To call the OpenAI REST API, you will need an API key. To obtain one, first [cre
 Add the client library to your .NET project by installing the [NuGet](https://www.nuget.org/) package via your IDE or by running the following command in the .NET CLI:
 
 ```cli
-dotnet add package OpenAI
+dotnet add package CompatibleAI
 ```
 
 Note that the code examples included below were written using [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0). The OpenAI .NET library is compatible with all .NET Standard 2.0 applications, but the syntax used in some of the code examples in this document may depend on newer language features.
 
 ## Using the client library
 
-The full API of this library can be found in the [OpenAI.netstandard2.0.cs](https://github.com/openai/openai-dotnet/blob/main/api/OpenAI.netstandard2.0.cs) file, and there are many [code examples](https://github.com/openai/openai-dotnet/tree/main/examples) to help. For instance, the following snippet illustrates the basic use of the chat completions API:
+The full API of this library can be found in the [OpenAI.netstandard2.0.cs](https://github.com/View12138/compatibleai-dotnet/blob/main/api/OpenAI.netstandard2.0.cs) file, and there are many [code examples](https://github.com/View12138/compatibleai-dotnet/tree/main/examples) to help. For instance, the following snippet illustrates the basic use of the chat completions API:
 
 ```C# Snippet:ReadMe_ChatCompletion_Basic
 ChatClient client = new(model: "gpt-5.1", apiKey: Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
@@ -957,6 +969,43 @@ This will yield streamed output from the run like the following:
 --- Run started! ---
 The first image depicts a multicolored apple with a blend of red and green hues, while the second image shows an orange with a bright, textured orange peel; one might say it’s comparing apples to oranges!
 ```
+## How to use with Moonshot AI (Kimi) and DeepSeek
+
+CompatibleAI works with any OpenAI-compatible API, including [Moonshot AI (Kimi)](https://platform.moonshot.cn) and [DeepSeek](https://platform.deepseek.com). Simply configure a custom base URL and the corresponding API key.
+
+### Moonshot AI (Kimi)
+
+```csharp
+ChatClient client = new(
+    model: "kimi-k2.6",
+    credential: new ApiKeyCredential(Environment.GetEnvironmentVariable("MOONSHOT_API_KEY")),
+    options: new OpenAIClientOptions()
+    {
+        Endpoint = new Uri("https://api.moonshot.cn/v1")
+    });
+var chatOptions = new ChatCompletionOptions()
+{
+    Thinking = new ChatThinkingOptions(ChatThinkingType.Disabled) // 禁用思考
+};
+ChatCompletion completion = await client.CompleteChatAsync("你好，请介绍一下你自己。", options: chatOptions);
+Console.WriteLine($"[ASSISTANT]: {completion.Content[0].Text}");
+```
+
+### DeepSeek
+
+```csharp
+ChatClient client = new(
+    model: "deepseek-v4-flash",
+    credential: new ApiKeyCredential(Environment.GetEnvironmentVariable("DEEPSEEK_API_KEY")),
+    options: new OpenAIClientOptions()
+    {
+        Endpoint = new Uri("https://api.deepseek.com")
+    });
+
+ChatCompletion completion = await client.CompleteChatAsync("Hello! Tell me about yourself.");
+Console.WriteLine($"[ASSISTANT]: {completion.Content[0].Text}");
+```
+
 ## How to work with Azure OpenAI
 
 Switching from OpenAI to Azure OpenAI is simple, and in most cases requires little to no code changes. To get started quickly, check out the starter kit at https://aka.ms/openai/start. If you want to understand how endpoint switching works, you can also read: https://aka.ms/openai/switch.

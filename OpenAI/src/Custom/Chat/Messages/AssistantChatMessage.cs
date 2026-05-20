@@ -24,6 +24,7 @@ public partial class AssistantChatMessage : ChatMessage
     public AssistantChatMessage(IEnumerable<ChatMessageContentPart> contentParts)
         : this(
               content: new ChatMessageContent(contentParts),
+              reasoningContent: null,
               role: ChatMessageRole.Assistant,
               patch: default,
               refusal: null,
@@ -45,6 +46,7 @@ public partial class AssistantChatMessage : ChatMessage
     public AssistantChatMessage(params ChatMessageContentPart[] contentParts)
         : this(
               content: new ChatMessageContent(contentParts),
+              reasoningContent: null,
               role: ChatMessageRole.Assistant,
               patch: default,
               refusal: null,
@@ -64,6 +66,28 @@ public partial class AssistantChatMessage : ChatMessage
     public AssistantChatMessage(string content)
         : this(
               content: new ChatMessageContent([content]),
+              reasoningContent: null,
+              role: ChatMessageRole.Assistant,
+              patch: default,
+              refusal: null,
+              participantName: null,
+              toolCalls: null,
+              functionCall: null,
+              outputAudioReference: null)
+    {
+        Argument.AssertNotNull(content, nameof(content));
+    }
+
+    /// <summary>
+    /// Creates a new instance of <see cref="AssistantChatMessage"/> that represents ordinary text content and
+    /// does not feature tool or function calls.
+    /// </summary>
+    /// <param name="content"> The text content of the message. </param>
+    /// <param name="reasoningContent"> The text reasoning_content of the message. </param>
+    public AssistantChatMessage(string content, string reasoningContent)
+        : this(
+              content: new ChatMessageContent([content]),
+              reasoningContent: new ChatMessageContent([reasoningContent]),
               role: ChatMessageRole.Assistant,
               patch: default,
               refusal: null,
@@ -83,6 +107,7 @@ public partial class AssistantChatMessage : ChatMessage
     public AssistantChatMessage(IEnumerable<ChatToolCall> toolCalls)
          : this(
               content: null,
+              reasoningContent: null,
               role: ChatMessageRole.Assistant,
               patch: default,
               refusal: null,
@@ -108,6 +133,7 @@ public partial class AssistantChatMessage : ChatMessage
     public AssistantChatMessage(ChatFunctionCall functionCall)
          : this(
               content: null,
+              reasoningContent: null,
               role: ChatMessageRole.Assistant,
               patch: default,
               refusal: null,
@@ -128,6 +154,7 @@ public partial class AssistantChatMessage : ChatMessage
     public AssistantChatMessage(ChatOutputAudioReference outputAudioReference)
          : this(
               content: null,
+              reasoningContent: null,
               role: ChatMessageRole.Assistant,
               patch: default,
               refusal: null,
@@ -156,6 +183,7 @@ public partial class AssistantChatMessage : ChatMessage
     public AssistantChatMessage(ChatCompletion chatCompletion)
         : this(
               content: chatCompletion?.Content,
+              reasoningContent: chatCompletion?.ReasoningContent,
               role: ChatMessageRole.Assistant,
               patch: default,
               refusal: chatCompletion?.Refusal,

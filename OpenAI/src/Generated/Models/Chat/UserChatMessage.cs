@@ -8,12 +8,12 @@ namespace OpenAI.Chat
 {
     public partial class UserChatMessage : ChatMessage
     {
-        internal UserChatMessage() : this(ChatMessageRole.User, null, default, null)
+        internal UserChatMessage() : this(ChatMessageRole.User, null,null, default, null)
         {
         }
 
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
-        internal UserChatMessage(ChatMessageRole role, ChatMessageContent content, in JsonPatch patch, string participantName) : base(role, content, patch)
+        internal UserChatMessage(ChatMessageRole role, ChatMessageContent content, ChatMessageContent reasoningContent, in JsonPatch patch, string participantName) : base(role, content, reasoningContent, patch)
         {
             ParticipantName = participantName;
         }

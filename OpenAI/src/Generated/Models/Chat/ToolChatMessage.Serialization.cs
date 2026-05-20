@@ -13,7 +13,7 @@ namespace OpenAI.Chat
 {
     public partial class ToolChatMessage : ChatMessage, IJsonModel<ToolChatMessage>
     {
-        internal ToolChatMessage() : this(ChatMessageRole.Tool, null, default, null)
+        internal ToolChatMessage() : this(ChatMessageRole.Tool, null, null, default, null)
         {
         }
 
@@ -94,6 +94,7 @@ namespace OpenAI.Chat
             }
             ChatMessageRole role = default;
             ChatMessageContent content = default;
+            ChatMessageContent reasoningContent = default;
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
             JsonPatch patch = new JsonPatch(data is null ? ReadOnlyMemory<byte>.Empty : data.ToMemory());
 #pragma warning restore SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
@@ -110,6 +111,11 @@ namespace OpenAI.Chat
                     DeserializeContentValue(prop, ref content, options);
                     continue;
                 }
+                if (prop.NameEquals("reasoning_content"u8))
+                {
+                    DeserializeReasoningContentValue(prop, ref reasoningContent, options);
+                    continue;
+                }
                 if (prop.NameEquals("tool_call_id"u8))
                 {
                     toolCallId = prop.Value.GetString();
@@ -117,7 +123,7 @@ namespace OpenAI.Chat
                 }
                 patch.Set([.. "$."u8, .. Encoding.UTF8.GetBytes(prop.Name)], prop.Value.GetUtf8Bytes());
             }
-            return new ToolChatMessage(role, content, patch, toolCallId);
+            return new ToolChatMessage(role, content, reasoningContent, patch, toolCallId);
         }
     }
 }

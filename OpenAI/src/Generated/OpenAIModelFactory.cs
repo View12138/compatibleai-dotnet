@@ -165,7 +165,7 @@ namespace OpenAI
 
         public static ChatMessage ChatMessage(string role = default, ChatMessageContent content = default)
         {
-            return new InternalUnknownChatMessage(role.ToChatMessageRole(), content, default);
+            return new InternalUnknownChatMessage(role.ToChatMessageRole(), content, null, default);
         }
 
         public static ChatMessageContentPart ChatMessageContentPart()
@@ -175,26 +175,27 @@ namespace OpenAI
 
         public static SystemChatMessage SystemChatMessage(ChatMessageContent content = default, string participantName = default)
         {
-            return new SystemChatMessage(default, content, default, participantName);
+            return new SystemChatMessage(default, content, null, default, participantName);
         }
 
         public static DeveloperChatMessage DeveloperChatMessage(ChatMessageContent content = default, string participantName = default)
         {
-            return new DeveloperChatMessage(default, content, default, participantName);
+            return new DeveloperChatMessage(default, content, null, default, participantName);
         }
 
         public static UserChatMessage UserChatMessage(ChatMessageContent content = default, string participantName = default)
         {
-            return new UserChatMessage(default, content, default, participantName);
+            return new UserChatMessage(default, content, null, default, participantName);
         }
 
-        public static AssistantChatMessage AssistantChatMessage(ChatMessageContent content = default, string refusal = default, string participantName = default, ChatOutputAudioReference outputAudioReference = default, IEnumerable<ChatToolCall> toolCalls = default, ChatFunctionCall functionCall = default)
+        public static AssistantChatMessage AssistantChatMessage(ChatMessageContent content = default, ChatMessageContent reasoningContent = default, string refusal = default, string participantName = default, ChatOutputAudioReference outputAudioReference = default, IEnumerable<ChatToolCall> toolCalls = default, ChatFunctionCall functionCall = default)
         {
             toolCalls ??= new ChangeTrackingList<ChatToolCall>();
 
             return new AssistantChatMessage(
                 default,
                 content,
+                reasoningContent,
                 default,
                 refusal,
                 participantName,
@@ -215,12 +216,12 @@ namespace OpenAI
 
         public static ToolChatMessage ToolChatMessage(ChatMessageContent content = default, string toolCallId = default)
         {
-            return new ToolChatMessage(default, content, default, toolCallId);
+            return new ToolChatMessage(default, content, null, default, toolCallId);
         }
 
         public static FunctionChatMessage FunctionChatMessage(ChatMessageContent content = default, string functionName = default)
         {
-            return new FunctionChatMessage(default, content, default, functionName);
+            return new FunctionChatMessage(default, content, null, default, functionName);
         }
 
         public static ChatAudioOptions ChatAudioOptions(ChatOutputAudioVoice outputAudioVoice = default, ChatOutputAudioFormat outputAudioFormat = default)

@@ -8,6 +8,7 @@ namespace OpenAI.Chat;
 
 [CodeGenSuppress("global::System.ClientModel.Primitives.IJsonModel<OpenAI.Chat.ChatMessage>.Write", typeof(Utf8JsonWriter), typeof(ModelReaderWriterOptions))]
 [CodeGenSerialization(nameof(Content), SerializationValueHook = nameof(SerializeContentValue), DeserializationValueHook = nameof(DeserializeContentValue))]
+[CodeGenSerialization(nameof(ReasoningContent), SerializationValueHook = nameof(SerializeReasoningContentValue), DeserializationValueHook = nameof(DeserializeReasoningContentValue))]
 public partial class ChatMessage
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -17,9 +18,21 @@ public partial class ChatMessage
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal void SerializeReasoningContentValue(Utf8JsonWriter writer, ModelReaderWriterOptions options = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static void DeserializeContentValue(JsonProperty property, ref ChatMessageContent content, ModelReaderWriterOptions options = null)
     {
         content = ChatMessageContent.DeserializeChatMessageContent(property.Value, options);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static void DeserializeReasoningContentValue(JsonProperty property, ref ChatMessageContent reasoningContent, ModelReaderWriterOptions options = null)
+    {
+        reasoningContent = ChatMessageContent.DeserializeChatMessageContent(property.Value, options);
     }
 
     void IJsonModel<ChatMessage>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
@@ -45,6 +58,16 @@ public partial class ChatMessage
         {
             writer.WritePropertyName("content"u8);
             Content.WriteTo(writer, options);
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal void WriteReasoningContentProperty(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        if (Optional.IsDefined(ReasoningContent) && ReasoningContent.IsInnerCollectionDefined())
+        {
+            writer.WritePropertyName("reasoning_content"u8);
+            ReasoningContent.WriteTo(writer, options);
         }
     }
 }

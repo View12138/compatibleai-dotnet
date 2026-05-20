@@ -10,12 +10,12 @@ namespace OpenAI.Chat
     [Experimental("OPENAI001")]
     public partial class DeveloperChatMessage : ChatMessage
     {
-        internal DeveloperChatMessage() : this(ChatMessageRole.Developer, null, default, null)
+        internal DeveloperChatMessage() : this(ChatMessageRole.Developer, null, null, default, null)
         {
         }
 
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
-        internal DeveloperChatMessage(ChatMessageRole role, ChatMessageContent content, in JsonPatch patch, string participantName) : base(role, content, patch)
+        internal DeveloperChatMessage(ChatMessageRole role, ChatMessageContent content, ChatMessageContent reasoningContent, in JsonPatch patch, string participantName) : base(role, content, reasoningContent, patch)
         {
             ParticipantName = participantName;
         }

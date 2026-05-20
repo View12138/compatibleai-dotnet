@@ -11,12 +11,13 @@
 
   <!-- Common Project Metadata -->
   <PropertyGroup>
-    <Product>The official .NET library for OpenAI</Product>
-    <Copyright>Copyright (c) 2026 OpenAI (https://openai.com)</Copyright>
-    <Company>OpenAI</Company>
+    <Product>The communal .NET library for CompatibleAI</Product>
+    <Copyright>Copyright (c) 2026 View12138</Copyright>
+    <Company>View12138</Company>
     <Authors>$(Company)</Authors>
-    <RepositoryUrl>https://github.com/openai/openai-dotnet</RepositoryUrl>
+    <RepositoryUrl>https://github.com/View12138/compatibleai-dotnet</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyName>$([System.String]::Copy('$(MSBuildProjectName)').Replace('OpenAI', 'CompatibleAI'))</AssemblyName>
   </PropertyGroup>
 
   <!-- Configuration -->
@@ -55,11 +56,11 @@
   <!-- Publishing -->
   <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>OpenAI.png</PackageIcon>
+    <PackageIcon>CompatibleAI.png</PackageIcon>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageTags>OpenAI;openai-dotnet;ChatGPT;Dall-E</PackageTags>
+    <PackageTags>OpenAI;openai-dotnet;ChatGPT;Dall-E;DeepSeek;Kimi</PackageTags>
 
     <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

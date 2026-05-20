@@ -214,6 +214,13 @@ public partial class ChatCompletionOptions
     [CodeGenMember("Prediction")]
     public ChatOutputPrediction OutputPrediction { get; set; }
 
+    // CUSTOM: Add legacy `thinking` routing.
+    /// <summary>
+    /// 启用或禁用思考能力
+    /// </summary>
+    [CodeGenMember("Thinking")]
+    public ChatThinkingOptions Thinking { get; set; }
+
     internal BinaryContent ToBinaryContent() => BinaryContent.Create(this, ModelSerializationExtensions.WireOptions);
 
     internal ChatCompletionOptions Clone()
@@ -255,6 +262,7 @@ public partial class ChatCompletionOptions
         clone.Seed = Seed;
         clone._patch = _patch;
         clone._patch.SetPropagators(clone.PropagateSet, clone.PropagateGet);
+        clone.Thinking = Thinking;
         return clone;
     }
 }

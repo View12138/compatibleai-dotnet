@@ -26,6 +26,7 @@ public partial class AssistantChatMessage : IJsonModel<AssistantChatMessage>
         writer.WriteStartObject();
         WriteRoleProperty(writer, options);
         WriteContentProperty(writer, options);
+        WriteReasoningContentProperty(writer, options);
         writer.WriteOptionalProperty("refusal"u8, Refusal, options);
         writer.WriteOptionalProperty("name"u8, ParticipantName, options);
         writer.WriteOptionalCollection("tool_calls"u8, ToolCalls, options);

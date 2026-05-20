@@ -49,6 +49,7 @@ public static partial class OpenAIChatModelFactory
         string id = null,
         ChatFinishReason finishReason = default,
         ChatMessageContent content = null,
+        ChatMessageContent reasoningContent = null,
         string refusal = null,
         IEnumerable<ChatToolCall> toolCalls = null,
         ChatMessageRole role = default,
@@ -64,6 +65,7 @@ public static partial class OpenAIChatModelFactory
         IEnumerable<ChatMessageAnnotation> messageAnnotations = default)
     {
         content ??= new ChatMessageContent();
+        reasoningContent ??= new ChatMessageContent();
         toolCalls ??= new List<ChatToolCall>();
         contentTokenLogProbabilities ??= new List<ChatTokenLogProbabilityDetails>();
         refusalTokenLogProbabilities ??= new List<ChatTokenLogProbabilityDetails>();
@@ -71,6 +73,7 @@ public static partial class OpenAIChatModelFactory
 
         InternalChatCompletionResponseMessage message = new(
             content: content,
+            reasoningContent: reasoningContent,
             refusal: refusal,
             toolCalls: toolCalls.ToList(),
             annotations: messageAnnotations.ToList(),
@@ -235,6 +238,7 @@ public static partial class OpenAIChatModelFactory
     public static StreamingChatCompletionUpdate StreamingChatCompletionUpdate(
         string completionId,
         ChatMessageContent contentUpdate,
+        ChatMessageContent reasoningContentUpdate,
         StreamingChatFunctionCallUpdate functionCallUpdate,
         IEnumerable<StreamingChatToolCallUpdate> toolCallUpdates,
         ChatMessageRole? role,
@@ -249,6 +253,7 @@ public static partial class OpenAIChatModelFactory
         StreamingChatCompletionUpdate(
             completionId: completionId,
             contentUpdate: contentUpdate,
+            reasoningContentUpdate: reasoningContentUpdate,
             functionCallUpdate: functionCallUpdate,
             toolCallUpdates: toolCallUpdates,
             role: role,
@@ -268,6 +273,7 @@ public static partial class OpenAIChatModelFactory
     public static StreamingChatCompletionUpdate StreamingChatCompletionUpdate(
         string completionId = null,
         ChatMessageContent contentUpdate = null,
+        ChatMessageContent reasoningContentUpdate = null,
         StreamingChatFunctionCallUpdate functionCallUpdate = null,
         IEnumerable<StreamingChatToolCallUpdate> toolCallUpdates = null,
         ChatMessageRole? role = default,
@@ -294,6 +300,7 @@ public static partial class OpenAIChatModelFactory
             refusal: refusalUpdate,
             role: role,
             content: contentUpdate,
+            reasoningContent: reasoningContentUpdate,
             patch: default);
 
         InternalCreateChatCompletionStreamResponseChoiceLogprobs logprobs = new InternalCreateChatCompletionStreamResponseChoiceLogprobs(

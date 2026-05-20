@@ -80,6 +80,11 @@ namespace OpenAI.Chat
                 writer.WritePropertyName("content"u8);
                 SerializeContentValue(writer, options);
             }
+            if (Optional.IsDefined(ReasoningContent) && ReasoningContent.IsInnerCollectionDefined() && !Patch.Contains("$.reasoning_content"u8))
+            {
+                writer.WritePropertyName("reasoning_content"u8);
+                SerializeReasoningContentValue(writer, options);
+            }
             if (Optional.IsDefined(FunctionCall) && !Patch.Contains("$.function_call"u8))
             {
                 writer.WritePropertyName("function_call"u8);
@@ -144,6 +149,7 @@ namespace OpenAI.Chat
             }
             StreamingChatOutputAudioUpdate audio = default;
             ChatMessageContent content = default;
+            ChatMessageContent reasoningContent = default;
             StreamingChatFunctionCallUpdate functionCall = default;
             IReadOnlyList<StreamingChatToolCallUpdate> toolCalls = default;
             ChatMessageRole? role = default;
@@ -165,6 +171,11 @@ namespace OpenAI.Chat
                 if (prop.NameEquals("content"u8))
                 {
                     DeserializeContentValue(prop, ref content, options);
+                    continue;
+                }
+                if (prop.NameEquals("reasoning_content"u8))
+                {
+                    DeserializeReasoningContentValue(prop, ref reasoningContent, options);
                     continue;
                 }
                 if (prop.NameEquals("function_call"u8))
@@ -214,6 +225,7 @@ namespace OpenAI.Chat
             return new InternalChatCompletionStreamResponseDelta(
                 audio,
                 content,
+                reasoningContent,
                 functionCall,
                 toolCalls ?? new ChangeTrackingList<StreamingChatToolCallUpdate>(),
                 role,

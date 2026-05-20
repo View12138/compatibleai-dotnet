@@ -14,7 +14,7 @@ namespace OpenAI.Chat
 {
     public partial class ChatCompletionOptions : IJsonModel<ChatCompletionOptions>
     {
-        public ChatCompletionOptions() : this(null, default, default, default, null, null, default, null, null, null, default, default, default, default, null, null, null, default, default, null, null, default, default, default, null, default, null, null, null, default, null, null, default)
+        public ChatCompletionOptions() : this(null, default, default, default, null, null, default, null, null, null, default, default, default, default, null, null, null, default, default, null, null, default, default, default, null, default, null, null, null, default, null, null, default, null)
         {
         }
 
@@ -337,7 +337,12 @@ namespace OpenAI.Chat
                 Patch.WriteTo(writer, "$.functions"u8);
                 writer.WriteEndArray();
             }
-
+            if (Optional.IsDefined(Thinking) && !Patch.Contains("$.thinking"u8))
+            {
+                writer.WritePropertyName("thinking"u8);
+                writer.WriteObjectValue(Thinking, options);
+            }
+#pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
             Patch.WriteTo(writer);
 #pragma warning restore SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
         }
@@ -394,6 +399,7 @@ namespace OpenAI.Chat
             bool? allowParallelToolCalls = default;
             ChatFunctionChoice functionChoice = default;
             IList<ChatFunction> functions = default;
+            ChatThinkingOptions thinking = default;
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
             JsonPatch patch = new JsonPatch(data is null ? ReadOnlyMemory<byte>.Empty : data.ToMemory());
 #pragma warning restore SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
@@ -711,6 +717,16 @@ namespace OpenAI.Chat
                     functions = array;
                     continue;
                 }
+                if (prop.NameEquals("thinking"u8))
+                {
+                    if (prop.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        thinking = null;
+                        continue;
+                    }
+                    thinking = ChatThinkingOptions.DeserializeChatThinkingOptions(prop.Value, prop.Value.GetUtf8Bytes(), options);
+                    continue;
+                }
                 patch.Set([.. "$."u8, .. Encoding.UTF8.GetBytes(prop.Name)], prop.Value.GetUtf8Bytes());
             }
             return new ChatCompletionOptions(
@@ -746,7 +762,8 @@ namespace OpenAI.Chat
                 allowParallelToolCalls,
                 functionChoice,
                 functions ?? new ChangeTrackingList<ChatFunction>(),
-                patch);
+                patch,
+                thinking);
         }
 
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.

@@ -9,7 +9,7 @@ namespace OpenAI.Chat
     public partial class FunctionChatMessage : ChatMessage
     {
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
-        internal FunctionChatMessage(ChatMessageRole role, ChatMessageContent content, in JsonPatch patch, string functionName) : base(role, content, patch)
+        internal FunctionChatMessage(ChatMessageRole role, ChatMessageContent content, ChatMessageContent reasoningContent, in JsonPatch patch, string functionName) : base(role, content, reasoningContent, patch)
         {
             FunctionName = functionName;
         }

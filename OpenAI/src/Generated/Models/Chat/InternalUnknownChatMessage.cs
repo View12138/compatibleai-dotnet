@@ -9,7 +9,7 @@ namespace OpenAI.Chat
     internal partial class InternalUnknownChatMessage : ChatMessage
     {
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
-        internal InternalUnknownChatMessage(ChatMessageRole role, ChatMessageContent content, in JsonPatch patch) : base(role, content, patch)
+        internal InternalUnknownChatMessage(ChatMessageRole role, ChatMessageContent content, ChatMessageContent reasoningContent, in JsonPatch patch) : base(role, content, reasoningContent, patch)
         {
         }
 #pragma warning restore SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.

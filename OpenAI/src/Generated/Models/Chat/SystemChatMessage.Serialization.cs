@@ -90,6 +90,7 @@ namespace OpenAI.Chat
             }
             ChatMessageRole role = default;
             ChatMessageContent content = default;
+            ChatMessageContent reasoningContent = default;
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
             JsonPatch patch = new JsonPatch(data is null ? ReadOnlyMemory<byte>.Empty : data.ToMemory());
 #pragma warning restore SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
@@ -106,6 +107,11 @@ namespace OpenAI.Chat
                     DeserializeContentValue(prop, ref content, options);
                     continue;
                 }
+                if (prop.NameEquals("reasoning_content"u8))
+                {
+                    DeserializeReasoningContentValue(prop, ref reasoningContent, options);
+                    continue;
+                }
                 if (prop.NameEquals("name"u8))
                 {
                     participantName = prop.Value.GetString();
@@ -113,7 +119,7 @@ namespace OpenAI.Chat
                 }
                 patch.Set([.. "$."u8, .. Encoding.UTF8.GetBytes(prop.Name)], prop.Value.GetUtf8Bytes());
             }
-            return new SystemChatMessage(role, content, patch, participantName);
+            return new SystemChatMessage(role, content, reasoningContent, patch, participantName);
         }
     }
 }

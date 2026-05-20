@@ -28,6 +28,7 @@ public partial class ToolChatMessage : IJsonModel<ToolChatMessage>
         writer.WritePropertyName("tool_call_id"u8);
         writer.WriteStringValue(ToolCallId);
         WriteContentProperty(writer, options);
+        WriteReasoningContentProperty(writer, options);
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
         Patch.WriteTo(writer);
 #pragma warning restore SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.

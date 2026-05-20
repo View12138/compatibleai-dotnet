@@ -4,8 +4,8 @@
     ==============================================================
       Central Package Management Metadata Propagation
 
-      CPM does not propagate metadata such as PrivateAssets from 
-      PackageVersion to PackageReference. This bridges that gap 
+      CPM does not propagate metadata such as PrivateAssets from
+      PackageVersion to PackageReference. This bridges that gap
       so the intent can be declared centrally in Directory.Packages.props.
 
       This must operate at evaluation time (not inside a Target) for
@@ -96,7 +96,7 @@
 
   <ItemGroup Condition="'$(MSBuildProjectName)' == 'OpenAI'">
     <None Include="$(RepositoryRoot)schema\ConfigurationSchema.json" Pack="true" PackagePath="\" Link="schema\ConfigurationSchema.json" />
-    <None Include="$(RepositoryRoot)eng\OpenAI.NuGet.targets" Pack="true" PackagePath="buildTransitive\netstandard2.0\OpenAI.targets" />
+    <None Include="$(RepositoryRoot)eng\OpenAI.NuGet.targets" Pack="true" PackagePath="buildTransitive\netstandard2.0\CompatibleAI.targets" Link="CompatibleAI.NuGet.targets" />
   </ItemGroup>
 
 </Project>

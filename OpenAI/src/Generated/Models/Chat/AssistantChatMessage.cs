@@ -10,12 +10,12 @@ namespace OpenAI.Chat
 {
     public partial class AssistantChatMessage : ChatMessage
     {
-        internal AssistantChatMessage() : this(ChatMessageRole.Assistant, null, default, null, null, null, null, null)
+        internal AssistantChatMessage() : this(ChatMessageRole.Assistant, null, null, default, null, null, null, null, null)
         {
         }
 
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
-        internal AssistantChatMessage(ChatMessageRole role, ChatMessageContent content, in JsonPatch patch, string refusal, string participantName, ChatOutputAudioReference outputAudioReference, IList<ChatToolCall> toolCalls, ChatFunctionCall functionCall) : base(role, content, patch)
+        internal AssistantChatMessage(ChatMessageRole role, ChatMessageContent content, ChatMessageContent reasoningContent, in JsonPatch patch, string refusal, string participantName, ChatOutputAudioReference outputAudioReference, IList<ChatToolCall> toolCalls, ChatFunctionCall functionCall) : base(role, content, reasoningContent, patch)
         {
             // Plugin customization: ensure initialization of collections
             Refusal = refusal;

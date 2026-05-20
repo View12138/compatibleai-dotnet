@@ -20,16 +20,18 @@ namespace OpenAI.Chat
         {
             // Plugin customization: ensure initialization of collections
             Content = content ?? new ChatMessageContent();
+            ReasoningContent = new ChatMessageContent();
             Refusal = refusal;
             ToolCalls = new ChangeTrackingList<ChatToolCall>();
             Annotations = new ChangeTrackingList<ChatMessageAnnotation>();
         }
 
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
-        internal InternalChatCompletionResponseMessage(ChatMessageContent content, string refusal, IReadOnlyList<ChatToolCall> toolCalls, IReadOnlyList<ChatMessageAnnotation> annotations, ChatMessageRole role, ChatFunctionCall functionCall, ChatOutputAudio audio, in JsonPatch patch)
+        internal InternalChatCompletionResponseMessage(ChatMessageContent content, ChatMessageContent reasoningContent, string refusal, IReadOnlyList<ChatToolCall> toolCalls, IReadOnlyList<ChatMessageAnnotation> annotations, ChatMessageRole role, ChatFunctionCall functionCall, ChatOutputAudio audio, in JsonPatch patch)
         {
             // Plugin customization: ensure initialization of collections
             Content = content ?? new ChatMessageContent();
+            ReasoningContent = reasoningContent ?? new ChatMessageContent();
             Refusal = refusal;
             ToolCalls = toolCalls ?? new ChangeTrackingList<ChatToolCall>();
             Annotations = annotations ?? new ChangeTrackingList<ChatMessageAnnotation>();

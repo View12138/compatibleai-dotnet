@@ -14,4 +14,8 @@ internal partial class InternalChatCompletionStreamResponseDelta
     /// <summary> The contents of the message. </summary>
     [CodeGenMember("Content")]
     public ChatMessageContent Content { get; }
+
+    /// <summary> The reasoning_contents of the message. </summary>
+    [CodeGenMember("ReasoningContent")]
+    public ChatMessageContent ReasoningContent { get; }
 }

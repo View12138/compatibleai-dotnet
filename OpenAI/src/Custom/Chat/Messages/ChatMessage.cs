@@ -64,15 +64,20 @@ public partial class ChatMessage
     /// </summary>
     public ChatMessageContent Content { get; }
 
+    /// <summary>
+    /// The reasoning_content associated with the message. The interpretation of this content will vary depending on the message type.
+    /// </summary>
+    public ChatMessageContent ReasoningContent { get; }
+
     // CUSTOM: Changed type from string to ChatMessageRole.
     [CodeGenMember("Role")]
     internal ChatMessageRole Role { get; set; }
 
     // CUSTOM: Made internal.
     internal ChatMessage(ChatMessageRole role)
-        : this(content: null, role: role, patch: default)
+        : this(content: null, reasoningContent: null, role: role, patch: default)
     { }
- 
+
     #region SystemChatMessage
     /// <inheritdoc cref="SystemChatMessage(string)"/>
     public static SystemChatMessage CreateSystemMessage(string content) => new(content);
@@ -112,6 +117,8 @@ public partial class ChatMessage
     #region AssistantChatMessage
     /// <inheritdoc cref="AssistantChatMessage(string)"/>
     public static AssistantChatMessage CreateAssistantMessage(string content) => new(content);
+    /// <inheritdoc cref="CreateAssistantMessage(string, string)"/>
+    public static AssistantChatMessage CreateAssistantMessage(string content, string reasoningContent) => new(content, reasoningContent);
 
     /// <inheritdoc cref="AssistantChatMessage(IEnumerable{ChatMessageContentPart})"/>
     public static AssistantChatMessage CreateAssistantMessage(IEnumerable<ChatMessageContentPart> contentParts) => new(contentParts);

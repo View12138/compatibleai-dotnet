@@ -26,6 +26,7 @@ public partial class UserChatMessage : IJsonModel<UserChatMessage>
         writer.WriteStartObject();
         WriteRoleProperty(writer, options);
         WriteContentProperty(writer, options);
+        WriteReasoningContentProperty(writer, options);
         writer.WriteOptionalProperty("name"u8, ParticipantName, options);
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
         Patch.WriteTo(writer);

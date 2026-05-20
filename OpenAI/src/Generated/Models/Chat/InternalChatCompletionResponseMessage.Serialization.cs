@@ -13,7 +13,7 @@ namespace OpenAI.Chat
 {
     internal partial class InternalChatCompletionResponseMessage : IJsonModel<InternalChatCompletionResponseMessage>
     {
-        internal InternalChatCompletionResponseMessage() : this(null, null, null, null, default, null, null, default)
+        internal InternalChatCompletionResponseMessage() : this(null, null, null, null, null, default, null, null, default)
         {
         }
 
@@ -81,6 +81,15 @@ namespace OpenAI.Chat
             else
             {
                 writer.WriteNull("content"u8);
+            }
+            if (Optional.IsDefined(ReasoningContent) && !Patch.Contains("$.reasoning_content"u8))
+            {
+                writer.WritePropertyName("reasoning_content"u8);
+                SerializeContentValue(writer, options);
+            }
+            else
+            {
+                writer.WriteNull("reasoning_content"u8);
             }
             if (Optional.IsDefined(Refusal) && !Patch.Contains("$.refusal"u8))
             {
@@ -177,6 +186,7 @@ namespace OpenAI.Chat
                 return null;
             }
             ChatMessageContent content = default;
+            ChatMessageContent reasoningContent = default;
             string refusal = default;
             IReadOnlyList<ChatToolCall> toolCalls = default;
             IReadOnlyList<ChatMessageAnnotation> annotations = default;
@@ -191,6 +201,11 @@ namespace OpenAI.Chat
                 if (prop.NameEquals("content"u8))
                 {
                     DeserializeContentValue(prop, ref content, options);
+                    continue;
+                }
+                if (prop.NameEquals("reasoning_content"u8))
+                {
+                    DeserializeReasoningContentValue(prop, ref reasoningContent, options);
                     continue;
                 }
                 if (prop.NameEquals("refusal"u8))
@@ -259,6 +274,7 @@ namespace OpenAI.Chat
             }
             return new InternalChatCompletionResponseMessage(
                 content,
+                reasoningContent,
                 refusal,
                 toolCalls ?? new ChangeTrackingList<ChatToolCall>(),
                 annotations ?? new ChangeTrackingList<ChatMessageAnnotation>(),

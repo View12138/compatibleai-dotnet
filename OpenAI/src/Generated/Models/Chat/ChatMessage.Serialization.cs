@@ -13,7 +13,7 @@ namespace OpenAI.Chat
     [PersistableModelProxy(typeof(InternalUnknownChatMessage))]
     public partial class ChatMessage : IJsonModel<ChatMessage>
     {
-        internal ChatMessage() : this(default, null, default)
+        internal ChatMessage() : this(default, null, null, default)
         {
         }
 
@@ -71,6 +71,11 @@ namespace OpenAI.Chat
             {
                 writer.WritePropertyName("content"u8);
                 SerializeContentValue(writer, options);
+            }
+            if (Optional.IsDefined(ReasoningContent) && ReasoningContent.IsInnerCollectionDefined() && !Patch.Contains("$.reasoning_content"u8))
+            {
+                writer.WritePropertyName("reasoning_content"u8);
+                SerializeReasoningContentValue(writer, options);
             }
 #pragma warning restore SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
         }

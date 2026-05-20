@@ -12,7 +12,7 @@ namespace OpenAI.Chat
 {
     internal partial class InternalUnknownChatMessage : ChatMessage, IJsonModel<ChatMessage>
     {
-        internal InternalUnknownChatMessage() : this(default, null, default)
+        internal InternalUnknownChatMessage() : this(default, null, null, default)
         {
         }
 
@@ -84,6 +84,7 @@ namespace OpenAI.Chat
             }
             ChatMessageRole role = default;
             ChatMessageContent content = default;
+            ChatMessageContent reasoningContent = default;
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
             JsonPatch patch = new JsonPatch(data is null ? ReadOnlyMemory<byte>.Empty : data.ToMemory());
 #pragma warning restore SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
@@ -99,9 +100,14 @@ namespace OpenAI.Chat
                     DeserializeContentValue(prop, ref content, options);
                     continue;
                 }
+                if (prop.NameEquals("reasoning_content"u8))
+                {
+                    DeserializeReasoningContentValue(prop, ref reasoningContent, options);
+                    continue;
+                }
                 patch.Set([.. "$."u8, .. Encoding.UTF8.GetBytes(prop.Name)], prop.Value.GetUtf8Bytes());
             }
-            return new InternalUnknownChatMessage(role, content, patch);
+            return new InternalUnknownChatMessage(role, content, reasoningContent, patch);
         }
     }
 }
